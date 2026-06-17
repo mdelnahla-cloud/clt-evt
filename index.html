@@ -186,15 +186,16 @@
   }
   function drawSample(){
     const {w,h}=dpr(c2,x2); x2.clearRect(0,0,w,h);
-    const [a,b]=src().r, plotW=w-2*PADX, midY=h/2-4;
+    const parentAxis=(mode==='mean'), a=parentAxis?src().r[0]:lo, b=parentAxis?src().r[1]:hi, dp=parentAxis?1:2;
+    const plotW=w-2*PADX, midY=h/2-4;
     const X=v=>PADX+((Math.max(a,Math.min(b,v))-a)/(b-a))*plotW;
     x2.strokeStyle=C.axis; x2.lineWidth=1; x2.beginPath(); x2.moveTo(PADX,midY+.5); x2.lineTo(PADX+plotW,midY+.5); x2.stroke();
     for(let i=0;i<recent.length-1;i++){ const px=X(recent[i]); x2.globalAlpha=0.12+0.5*(i/recent.length); x2.beginPath(); x2.arc(px,midY,3,0,7); x2.fillStyle=C.trail; x2.fill(); }
     x2.globalAlpha=1;
     if(lastStat!==null){ const px=X(lastStat); x2.beginPath(); x2.arc(px,midY,5.5,0,7); x2.fillStyle=C.hi; x2.fill(); }
     x2.fillStyle=C.axis; x2.font=FONT; x2.textBaseline='top';
-    x2.textAlign='left'; x2.fillText(a.toFixed(1),PADX,midY+8);
-    x2.textAlign='right'; x2.fillText(b.toFixed(1),PADX+plotW,midY+8);
+    x2.textAlign='left'; x2.fillText(a.toFixed(dp),PADX,midY+8);
+    x2.textAlign='right'; x2.fillText(b.toFixed(dp),PADX+plotW,midY+8);
   }
   function drawHist(){
     const {w,h}=dpr(c3,x3); x3.clearRect(0,0,w,h);
