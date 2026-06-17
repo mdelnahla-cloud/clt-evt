@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "mcp__visualize__read_me",
-      "mcp__visualize__show_widget",
-      "PowerShell($gh = \"$env:ProgramFiles\\\\GitHub CLI\\\\gh.exe\"; & $gh api repos/mdelnahla-cloud/clt-evt/pages/builds/latest --jq '.status + \" | \" + \\(.error.message // \"no error\"\\)' 2>&1)"
-    ]
-  }
-}
