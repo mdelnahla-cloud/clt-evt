@@ -216,14 +216,26 @@
     document.getElementById('lblval').textContent=lastStat===null?'–':lastStat.toFixed(3);
   }
   function info(){
-    const s=src();
-    document.getElementById('lbln').textContent=nv();
+    const s=src(), n=nv(), el=document.getElementById('info');
+    document.getElementById('lbln').textContent=n;
     document.getElementById('lblstat').textContent=mode==='mean'?'average':'maximum';
     if(mode==='mean'){
-      document.getElementById('info').innerHTML='Averaging '+nv()+' draws from <b>'+s.label+'</b>. Whatever the parent shape, the averages converge to a <b>Normal</b> curve &mdash; the Central Limit Theorem.';
+      el.innerHTML='<b>Central Limit Theorem.</b> Draw a sample of '+n+' from <b>'+s.label+'</b>, take its <b>average</b>, and repeat thousands of times. '
+        +'No matter the parent’s shape, the pile of averages converges to a single <b>Normal</b> curve.';
       document.getElementById('limname').textContent='Normal (CLT)';
     } else {
-      document.getElementById('info').innerHTML='Taking the max of '+nv()+' draws from <b>'+s.label+'</b>. Its <b>'+s.tail+'</b> sends the maxima to the <b>'+s.fam+'</b> distribution &mdash; Extreme Value Theory.';
+      const map=[
+        ['Gumbel','light / unbounded tail (Exponential, Normal, Weibull, Bimodal)'],
+        ['Weibull','bounded tail (Uniform)'],
+        ['Fréchet','heavy tail (Pareto)'],
+      ];
+      const rows=map.map(m=>{const on=m[0]===s.fam;
+        return '<div style="display:flex; gap:8px; padding:1px 0; color:'+(on?'var(--text)':'var(--muted)')+'; opacity:'+(on?1:0.5)+';">'
+          +'<span style="width:12px; color:var(--hi);">'+(on?'▸':'')+'</span>'
+          +'<span>'+m[1]+' &rarr; <b>'+m[0]+'</b></span></div>';}).join('');
+      el.innerHTML='<b>Extreme Value Theory.</b> Draw a sample of '+n+' from <b>'+s.label+'</b>, keep only its <b>maximum</b>, and repeat thousands of times. '
+        +'The pile of maxima converges to one of three shapes, set by the parent’s tail:'
+        +'<div style="margin-top:6px; font-size:13px;">'+rows+'</div>';
       document.getElementById('limname').textContent=s.fam+' (EVT)';
     }
   }
